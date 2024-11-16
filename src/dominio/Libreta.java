@@ -1,31 +1,41 @@
 package contactos.agenda_2024.src.dominio;
 import java.util.ArrayList;
 import java.io.Serializable;
-public class Libreta implements Serializable{
-	private ArrayList<Contacto> lista;
 
-	public Libreta(){
-		lista=new ArrayList<Contacto>();
-	}
+public class Libreta implements Serializable {
+    private ArrayList<Contacto> lista;
 
-	public Libreta add(Contacto c){
- 		lista.add(c);
-		return this;
-	}
+    public Libreta() {
+        lista = new ArrayList<Contacto>();
+    }
 
-	public String toString(){
-		String cadena="";
-		for ( Contacto c:lista)
-			cadena+=c+"\n";
-		return cadena;
-	}
+    public Libreta add(Contacto c) throws Exception {
+        if (lista.contains(c)) {
+            throw new Exception("Error: El contacto ya existe.");
+        }
+        lista.add(c);
+        return this;
+    }
 
-	public Libreta del(String nombre){
-		lista.remove(new Contacto(nombre));
-		return this;
-	}
-	public Contacto search(String n){
-		int i=lista.indexOf(new Contacto(n));
-		return lista.get(i);
-	}
+    public String toString() {
+        String cadena = "";
+        for (Contacto c : lista)
+            cadena += c + "\n";
+        return cadena;
+    }
+
+    public Libreta del(String nombre) throws Exception {
+        if (!lista.remove(new Contacto(nombre))) {
+            throw new Exception("Error: Contacto no encontrado.");
+        }
+        return this;
+    }
+
+    public Contacto search(String n) throws Exception {
+        int i = lista.indexOf(new Contacto(n));
+        if (i == -1) {
+            throw new Exception("Error: Contacto no encontrado.");
+        }
+        return lista.get(i);
+    }
 }
